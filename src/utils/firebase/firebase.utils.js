@@ -1,46 +1,57 @@
-import {initializeApp} from 'firebase/app';
-import { getAuth,
-        signInWithRedirect,
-        signInWithPopup,
-         GoogleAuthProvider } 
-       from 'firebase/auth';
+import { initializeApp } from "firebase/app";
 import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-} from 'firebase/firestore'
+  getAuth,
+  signInWithRedirect,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCznC8peYZ_8VEU2I8edZGCe61sJSv_Rhw",
-    authDomain: "clothing-db-13db6.firebaseapp.com",
-    projectId: "clothing-db-13db6",
-    storageBucket: "clothing-db-13db6.appspot.com",
-    messagingSenderId: "902723298335",
-    appId: "1:902723298335:web:64925a845364d28622212a"
-  };
-  
-  // Initialize Firebase
+  apiKey: "AIzaSyCznC8peYZ_8VEU2I8edZGCe61sJSv_Rhw",
+  authDomain: "clothing-db-13db6.firebaseapp.com",
+  projectId: "clothing-db-13db6",
+  storageBucket: "clothing-db-13db6.appspot.com",
+  messagingSenderId: "902723298335",
+  appId: "1:902723298335:web:64925a845364d28622212a",
+};
+
+// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
 const provider = new GoogleAuthProvider();
 
 provider.setCustomParameters({
-    prompt:'select_account'
-  });
+  prompt: "select_account",
+});
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth,provider);
+export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const db = getFirestore();
 
-export const creatUserDocumentFromAuth = async (userAuth) =>{
-const  userDocRef = doc(db,'users',userAuth.uid);
+export const creatUserDocumentFromAuth = async (userAuth) => {
+  const userDocRef = doc(db, "users", userAuth.uid);
 
-console.log(userDocRef);
 
-const userSnapshot = await getDoc(userDocRef);
-console.log(userSnapshot);
-console.log(userSnapshot.exists());
-}
+
+  const userSnapshot = await getDoc(userDocRef);
+
+
+  if (!userSnapshot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+    try {
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+      });
+    } catch (error) {
+      console.log("error creating the user", error.message);
+    }
+  }
+
+  return userDocRef;
+};
