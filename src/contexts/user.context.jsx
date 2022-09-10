@@ -1,18 +1,28 @@
-import { createContext, useState } from "react";
+import { connectFirestoreEmulator } from "firebase/firestore";
+import { createContext, useState, useEffect } from "react";
 
-export const UserContext =  createContext({
-    currentUser:null,
-    setCurrentUser: () => null,
+import { onAuthStateChangedListener,creatUserDocumentFromAuth } from "../utils/firebase/firebase.utils";
 
+export const UserContext = createContext({
+  setCurrentUser: () => null,
+  currentUser: null,
 });
 
-export const UserProvider = ({children}) => {
+export const UserProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
 
-    const [currentUser, setCurrentUser] = useState(null);
+  const value = { currentUser, setCurrentUser };
 
-    const value = {currentUser, setCurrentUser};
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener((user) => {
+        if(user){
+            creatUserDocumentFromAuth(user);
+        }
+      setCurrentUser(user);
+    });
 
-    return <UserContext.Provider value={value}>   
-            {children}
-    </UserContext.Provider>
-}
+    return unsubscribe;
+  }, []);
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+};
