@@ -89,7 +89,7 @@ export const CartProvider = ({ children }) => {
     clearItemFromCart,
     cartItems,
     cartCount,
-    cartTotal,
+    cartTotal
   };
 
   return <CartContext.Provider value={value}> {children}</CartContext.Provider>;
