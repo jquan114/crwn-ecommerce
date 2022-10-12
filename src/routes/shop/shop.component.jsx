@@ -4,7 +4,7 @@ import CategoriesPreview from '../../components/categories-preview/categories-pr
 import "./shop.styles.scss";
 
 export const Shop = () => {
- 
+  
   return (
    <Routes>
      <Route index element ={<CategoriesPreview/>} />
