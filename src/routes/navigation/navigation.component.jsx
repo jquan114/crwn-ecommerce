@@ -10,7 +10,7 @@ import { CartContext } from "../../contexts/cart.context";
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 
-import "./navigation.styles.scss";
+import {NavigationContainer} from './navigation.styles';
 
 
 const Navigation = () => {
@@ -19,7 +19,7 @@ const Navigation = () => {
   const { isCartOpen } = useContext(CartContext);
   return (
     <Fragment>
-      <div className="navigation">
+      <NavigationContainer>
         <Link className="logo-container" to="/">
           <CrwnLogo className="logo" />
         </Link>
@@ -40,7 +40,7 @@ const Navigation = () => {
           <CartIcon />
         </div>
         {isCartOpen && <CartDowndown />}
-      </div>
+      </NavigationContainer>
       <Outlet />
     </Fragment>
   );
