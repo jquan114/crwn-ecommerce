@@ -1,4 +1,3 @@
-import { connectFirestoreEmulator } from "firebase/firestore";
 import { useState } from "react";
 
 import FormInput from "../form-input/form-input.component";
