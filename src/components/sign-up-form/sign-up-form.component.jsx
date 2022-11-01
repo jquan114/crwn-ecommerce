@@ -5,7 +5,7 @@ import Button from '../button/button.component'
 
 import {
   createAuthUserWithEmailAndPassword,
-  creatUserDocumentFromAuth,
+  createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
 
 import './sign-up-form.styles.scss'
@@ -42,7 +42,7 @@ const SignUpForm = () => {
 
    
       
-      await creatUserDocumentFromAuth(user, { displayName });
+      await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
