@@ -8,6 +8,7 @@ import App from './App';
 // import { CategoriesProvider } from './contexts/categories.context';
 import { CartProvider } from './contexts/cart.context';
 import { store } from './store/store';
+import { stripePromise } from './utils/stripe/stripe.utils';
 
 import './index.scss';
 
@@ -19,7 +20,7 @@ render(
       <BrowserRouter>
         {/* <CategoriesProvider> */}
           <CartProvider>
-            <Elements>
+            <Elements stripe = {stripePromise}>
               <App />
             </Elements>
           </CartProvider>
